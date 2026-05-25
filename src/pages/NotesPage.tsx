@@ -1,98 +1,20 @@
 import { useState } from 'react'
-import { Anchor, Box, Code, Container, List, Text, Title } from '@mantine/core'
+import {
+  Anchor,
+  Box,
+  CloseButton,
+  Container,
+  NavLink as MantineNavLink,
+  Tabs,
+  Text,
+} from '@mantine/core'
 
 import { SectionHeader } from '../components/SectionHeader'
+import { TerminalFrame } from '../components/TerminalFrame'
 import { useStamp } from '../hooks/useStamp'
-
-type DocEntry = {
-  key: string
-  repo: string
-  name: string
-  lines: number
-  repoUrl: string
-  content: React.ReactNode
-}
-
-const DOCS: DocEntry[] = [
-  {
-    key: 'hyphae-readme',
-    repo: 'hyphae',
-    name: 'README.md',
-    lines: 142,
-    repoUrl: 'https://github.com/basidiocarp/hyphae/blob/main/README.md',
-    content: (
-      <Box className="doc-body">
-        <Title order={2}>hyphae</Title>
-        <Text className="latin" style={{ margin: '8px 0 20px' }}>Memoria persistens — persistent memory and RAG</Text>
-        <Text>Two memory models doing different jobs. <strong>Memories</strong> have a decay curve — they fade unless reinforced, like real working memory. <strong>Memoirs</strong> are durable concept graphs that survive indefinitely.</Text>
-        <Title order={3} mt="xl">Recall signals</Title>
-        <List mt="sm" spacing="xs">
-          <List.Item><strong>BM25 (25%)</strong> — keyword matching against stored summaries</List.Item>
-          <List.Item><strong>Cosine (55%)</strong> — semantic similarity via sentence embeddings</List.Item>
-          <List.Item><strong>Entity linking (20%)</strong> — ecosystem vocabulary overlap</List.Item>
-        </List>
-        <Title order={3} mt="xl">Quick start</Title>
-        <Code block mt="sm">{'stipe install hyphae\nhyphae_memory_store topic="decisions/myproject" ...\nhyphae_memory_recall query="auth middleware" --limit 5'}</Code>
-      </Box>
-    ),
-  },
-  {
-    key: 'mycelium-readme',
-    repo: 'mycelium',
-    name: 'README.md',
-    lines: 98,
-    repoUrl: 'https://github.com/basidiocarp/mycelium/blob/main/README.md',
-    content: (
-      <Box className="doc-body">
-        <Title order={2}>mycelium</Title>
-        <Text className="latin" style={{ margin: '8px 0 20px' }}>Basidiocarp myceliumii — token-optimised CLI proxy</Text>
-        <Text>Sits between the agent and the shell. Verbose output from <Code>cargo test</Code>, <Code>git log</Code>, and similar commands is compressed before it reaches the model. The full output is chunked into hyphae if you need it.</Text>
-        <Title order={3} mt="xl">Filters</Title>
-        <List mt="sm" spacing="xs">
-          <List.Item><strong>cargo test</strong> — strips passing lines, keeps failures and timings</List.Item>
-          <List.Item><strong>git log</strong> — collapses identical commit runs, preserves merges</List.Item>
-          <List.Item><strong>npm install</strong> — drops progress bars, keeps warnings and errors</List.Item>
-        </List>
-        <Code block mt="sm">{'# Savings summary (typical)\ncargo test:  −87%\ngit log:     −72%\nnpm install: −64%'}</Code>
-      </Box>
-    ),
-  },
-  {
-    key: 'canopy-readme',
-    repo: 'canopy',
-    name: 'README.md',
-    lines: 115,
-    repoUrl: 'https://github.com/basidiocarp/canopy/blob/main/README.md',
-    content: (
-      <Box className="doc-body">
-        <Title order={2}>canopy</Title>
-        <Text className="latin" style={{ margin: '8px 0 20px' }}>Coordinatio multiplex — multi-agent coordination</Text>
-        <Text>A local-first ledger for task ownership, handoffs, evidence, and Council threads across parallel agent work. Prevents two agents from taking the same branch at the same time.</Text>
-        <Title order={3} mt="xl">Core concepts</Title>
-        <List mt="sm" spacing="xs">
-          <List.Item><strong>Task</strong> — an atomic unit of work with an owner</List.Item>
-          <List.Item><strong>Handoff</strong> — evidence that a task transferred between agents</List.Item>
-          <List.Item><strong>Council</strong> — a named thread for multi-agent discussion</List.Item>
-        </List>
-      </Box>
-    ),
-  },
-  {
-    key: 'septa-contracts',
-    repo: 'septa',
-    name: 'README.md',
-    lines: 67,
-    repoUrl: 'https://github.com/basidiocarp/septa/blob/main/README.md',
-    content: (
-      <Box className="doc-body">
-        <Title order={2}>septa</Title>
-        <Text className="latin" style={{ margin: '8px 0 20px' }}>Contractus validationis — shared schemas and fixtures</Text>
-        <Text>The internal walls between hyphae. Septa owns the cross-tool payload schemas. Any change that crosses a tool boundary goes through septa first — update the schema, update the fixture, run validate-all.sh.</Text>
-        <Code block mt="sm">{'cd septa && bash validate-all.sh'}</Code>
-      </Box>
-    ),
-  },
-]
+import shared from '../styles/shared.module.css'
+import { DOCS } from './notesContent'
+import styles from './NotesPage.module.css'
 
 export function NotesPage() {
   useStamp('notes')
@@ -108,8 +30,8 @@ export function NotesPage() {
     }
   }
 
-  const closeTab = (key: string, e: React.SyntheticEvent) => {
-    e.stopPropagation()
+  const closeTab = (key: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     if (openTabs.length === 1) return
     const next = openTabs.filter((k) => k !== key)
     setOpenTabs(next)
@@ -117,7 +39,7 @@ export function NotesPage() {
   }
 
   return (
-    <Box className="page-notes" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
         <SectionHeader
           label="03 / Notes"
@@ -125,68 +47,75 @@ export function NotesPage() {
           subtitle="architecture · decisions · field observations"
         />
 
-        <Box className="editor-shell">
-          <Box className="editor-bar">
-            <Box className="lights">
-              <span /><span /><span />
-            </Box>
-            <Text className="crumb">
-              basidiocarp <span className="sep">/</span> {doc.repo} <span className="sep">/</span>{' '}
-              <span style={{ color: 'var(--glow-spore)' }}>{doc.name}</span>
+        <TerminalFrame
+          bodyClassName={styles['editor-body']}
+          className={styles['editor-shell']}
+          rightSection={(
+            <Anchor className={styles['branch-link']} href={doc.repoUrl} rel="noopener noreferrer" target="_blank" underline="hover">
+              main ↗
+            </Anchor>
+          )}
+          title={(
+            <Text className={styles.crumb}>
+              basidiocarp <span className={styles.sep}>/</span> {doc.repo} <span className={styles.sep}>/</span>{' '}
+              <span className={styles['crumb-current']}>{doc.name}</span>
             </Text>
-            <Box className="branch">
-              <Anchor href={doc.repoUrl} rel="noopener noreferrer" style={{ color: 'inherit', fontSize: 'inherit', fontFamily: 'inherit' }} target="_blank" underline="hover">
-                main ↗
-              </Anchor>
-            </Box>
-          </Box>
-
-          <Box className="editor-body">
-            <Box className="file-tree">
-              <Text className="ft-section">repos</Text>
+          )}
+        >
+            <Box className={styles['file-tree']}>
+              <Text className={styles['ft-section']}>repos</Text>
               {DOCS.map((d) => (
-                <Box
-                  className={`ft-row${activeDoc === d.key ? ' is-active' : ''}`}
+                <MantineNavLink
+                  active={activeDoc === d.key}
+                  className={styles['ft-row']}
+                  color="brandSpore"
+                  component="button"
                   key={d.key}
+                  label={`${d.repo}/${d.name}`}
                   onClick={() => openDoc(d.key)}
-                >
-                  {d.repo}/{d.name}
-                  <Text className="ln" component="span">{d.lines}L</Text>
-                </Box>
+                  rightSection={<Text className={styles.ln} component="span">{d.lines}L</Text>}
+                  type="button"
+                  variant="subtle"
+                />
               ))}
             </Box>
 
-            <Box className="editor-content">
-              <Box className="tabs">
-                {openTabs.map((key) => {
-                  const d = DOCS.find((x) => x.key === key)
-                  if (!d) return null
-                  return (
-                    <Box
-                      className={`tab${activeDoc === key ? ' is-active' : ''}`}
-                      key={key}
-                      onClick={() => setActiveDoc(key)}
-                    >
-                      {d.repo}/{d.name}
-                      <span
-                        aria-label="Close tab"
-                        className="x"
-                        onClick={(e) => closeTab(key, e)}
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') closeTab(key, e) }}
-                        role="button"
-                        tabIndex={0}
-                      >×</span>
-                    </Box>
-                  )
-                })}
-              </Box>
+            <Box className={styles['editor-content']}>
+              <Tabs
+                className={styles['editor-tabs']}
+                keepMounted={false}
+                onChange={(value) => { if (value) setActiveDoc(value) }}
+                value={activeDoc}
+              >
+                <Tabs.List>
+                  {openTabs.map((key) => {
+                    const d = DOCS.find((x) => x.key === key)
+                    if (!d) return null
+                    return (
+                      <Box className={styles['tab-wrap']} key={key}>
+                        <Tabs.Tab pr={openTabs.length > 1 ? 32 : undefined} value={key}>
+                          {d.repo}/{d.name}
+                        </Tabs.Tab>
+                        {openTabs.length > 1 && (
+                          <CloseButton
+                            aria-label={`Close ${d.repo}/${d.name}`}
+                            className={styles['tab__close']}
+                            onClick={(event) => closeTab(key, event)}
+                            size="xs"
+                            variant="transparent"
+                          />
+                        )}
+                      </Box>
+                    )
+                  })}
+                </Tabs.List>
 
-              <Box className="doc" style={{ display: 'block' }}>
-                {doc.content}
-              </Box>
+                <Tabs.Panel className={styles.doc} value={doc.key}>
+                  {doc.content}
+                </Tabs.Panel>
+              </Tabs>
             </Box>
-          </Box>
-        </Box>
+        </TerminalFrame>
       </Container>
     </Box>
   )

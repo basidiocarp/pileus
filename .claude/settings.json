@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const cmd=i.tool_input?.command||'';if(process.platform!=='win32'&&/(npm run dev\\b|pnpm( run)? dev\\b|yarn dev\\b|bun run dev\\b)/.test(cmd)){console.error('[Hook] BLOCKED: Dev server should run in tmux for log access');console.error('[Hook] Use: tmux new-session -d -s dev \\\"npm run dev\\\"');console.error('[Hook] Then: tmux attach -t dev');process.exit(2)}}catch{}console.log(d)})\""
+          }
+        ],
+        "description": "Block dev servers outside tmux so logs remain accessible"
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const cmd=i.tool_input?.command||'';if(process.platform!=='win32'&&!process.env.TMUX&&/(npm (install|test)|pnpm (install|test)|yarn (install|test)?|bun (install|test)|cargo build|make\\b|docker\\b|pytest|vitest|playwright|pdm run)/.test(cmd)){console.error('[Hook] Consider running long-lived commands in tmux for persistence');console.error('[Hook] tmux new -s dev  |  tmux attach -t dev')}}catch{}console.log(d)})\""
+          }
+        ],
+        "description": "Remind when long-running commands are started outside tmux"
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const cmd=i.tool_input?.command||'';if(/git push/.test(cmd)){console.error('[Hook] Review changes before push')}}catch{}console.log(d)})\""
+          }
+        ],
+        "description": "Light reminder before git push"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const cmd=i.tool_input?.command||'';if(/gh pr create/.test(cmd)){const out=i.tool_output?.output||'';const m=out.match(/https:\\/\\/github.com\\/[^/]+\\/[^/]+\\/pull\\/\\d+/);if(m){console.error('[Hook] PR created: '+m[0])}}}catch{}console.log(d)})\""
+          }
+        ],
+        "description": "Echo created PR URL after gh pr create"
+      }
+    ]
+  }
+}

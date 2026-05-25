@@ -1,5 +1,8 @@
-import { Box, Button, Container, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Box, Button, Card, Container, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { Link } from 'react-router-dom'
+
+import shared from '../styles/shared.module.css'
+import styles from './NotFoundPage.module.css'
 
 const suggests = [
   { to: '/',          label: 'surface',   hint: 'the home page' },
@@ -11,7 +14,7 @@ const suggests = [
 /* Minimal spore-field SVG for the right column */
 function AbsensIllustration() {
   return (
-    <svg aria-hidden="true" className="nf-illust" viewBox="0 0 320 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg aria-hidden="true" className={styles['nf-illust']} viewBox="0 0 320 380" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* Soil line */}
       <path d="M20 300 Q160 318 300 300" stroke="#3b1f0f" strokeWidth="1" />
       <path d="M20 306 Q160 324 300 306" stroke="#5b3a20" strokeDasharray="2 4" strokeWidth="0.5" />
@@ -65,22 +68,22 @@ function AbsensIllustration() {
 
 export function NotFoundPage() {
   return (
-    <Box className="page-nf" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
-        <Box className="nf-grid">
-          <Box className="nf-card">
-            <Box className="nf-stamp">missing</Box>
-            <Text className="eyebrow">
-              <span className="dot">●</span> Field guide entry · 404 of 12
+        <Box className={styles['nf-grid']}>
+          <Box className={styles['nf-card']}>
+            <Box className={styles['nf-stamp']}>missing</Box>
+            <Text className={shared.eyebrow}>
+              <span className={shared.dot}>●</span> Field guide entry · 404 of 12
             </Text>
-            <Title className="nf-title" order={1}>
+            <Title className={styles['nf-title']} order={1}>
               A <em>missing</em> fruiting body.
             </Title>
-            <Text className="nf-latin" component="span">
+            <Text className={styles['nf-latin']} component="span">
               Carpophorus absens — the page that did not fruit
             </Text>
 
-            <Box className="nf-meta" component="dl">
+            <Box className={styles['nf-meta']} component="dl">
               <Text component="dt">habitat</Text>
               <Text component="dd">{window.location.pathname}</Text>
               <Text component="dt">last sighted</Text>
@@ -88,10 +91,10 @@ export function NotFoundPage() {
               <Text component="dt">substrate</Text>
               <Text component="dd">broken link, expired link, hopeful guess</Text>
               <Text component="dt">edibility</Text>
-              <Text component="dd"><span className="strike">choice</span> · unknown</Text>
+              <Text component="dd"><span className={styles.strike}>choice</span> · unknown</Text>
             </Box>
 
-            <Stack className="nf-body" gap="sm">
+            <Stack className={styles['nf-body']} gap="sm">
               <Text>
                 The page you sought has either <em>not yet fruited</em>, has long since decayed
                 back into the substrate, or was never in the herbarium to begin with.
@@ -102,26 +105,26 @@ export function NotFoundPage() {
               </Text>
             </Stack>
 
-            <Box className="nf-actions">
+            <Box className={styles['nf-actions']}>
               <Button component={Link} to="/" variant="filled">← back to the surface</Button>
               <Button component={Link} to="/tools" variant="outline">browse tools</Button>
               <Button component={Link} to="/install" variant="outline">quick start</Button>
             </Box>
           </Box>
 
-          <Box className="nf-illust-wrap">
+          <Box className={styles['nf-illust-wrap']}>
             <AbsensIllustration />
           </Box>
         </Box>
 
-        <Box className="nf-suggest" mt="xl">
-          <Text className="nf-suggest__label">you might find</Text>
+        <Box className={styles['nf-suggest']} mt="xl">
+          <Text className={styles['nf-suggest__label']}>you might find</Text>
           <SimpleGrid cols={{ base: 2, sm: 4 }} mt="md" spacing="md">
             {suggests.map((s) => (
-              <Link className="nf-suggest__card" key={s.to} to={s.to}>
+              <Card className={styles['nf-suggest__card']} component={Link} key={s.to} padding="md" radius="md" to={s.to}>
                 <Text component="strong">{s.label}</Text>
                 <Text component="span">{s.hint}</Text>
-              </Link>
+              </Card>
             ))}
           </SimpleGrid>
         </Box>

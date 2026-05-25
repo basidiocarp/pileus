@@ -1,13 +1,15 @@
 import { Box, Text } from '@mantine/core'
 
+import styles from './HeroDiagram.module.css'
+
 const annotations = [
-  { key: 'cap',      label: 'cap',      latin: 'visus operandi',   text: 'operator dashboard', x: '88%', y: '20%' },
-  { key: 'hymenium', label: 'hymenium', latin: 'lamina fertilis',  text: 'workflow gate',       x: '88%', y: '43%' },
-  { key: 'annulus',  label: 'annulus',  latin: 'anulus operandi',  text: 'operator utilities',  x: '88%', y: '60%' },
-  { key: 'stipe',    label: 'stipe',    latin: 'stipes fund.',      text: 'installer and repair', x: '88%', y: '77%' },
-  { key: 'mycelium', label: 'mycelium', latin: 'myceliumii',        text: 'token proxy',         x: '-2%', y: '90%', align: 'right' },
-  { key: 'spore',    label: 'spore',    latin: 'particula vagans',  text: 'shared primitives',   x: '-2%', y: '46%', align: 'right' },
-  { key: 'volva',    label: 'volva',    latin: 'velamen primum',    text: 'execution host',      x: '-2%', y: '18%', align: 'right' },
+  { key: 'cap',      label: 'cap',      latin: 'visus operandi',   text: 'operator dashboard', x: '76%', y: '20%' },
+  { key: 'hymenium', label: 'hymenium', latin: 'lamina fertilis',  text: 'workflow gate',       x: '76%', y: '43%' },
+  { key: 'annulus',  label: 'annulus',  latin: 'anulus operandi',  text: 'operator utilities',  x: '76%', y: '60%' },
+  { key: 'stipe',    label: 'stipe',    latin: 'stipes fund.',      text: 'installer and repair', x: '76%', y: '77%' },
+  { key: 'mycelium', label: 'mycelium', latin: 'myceliumii',        text: 'token proxy',         x: '0%', y: '90%', align: 'right' },
+  { key: 'spore',    label: 'spore',    latin: 'particula vagans',  text: 'shared primitives',   x: '0%', y: '46%', align: 'right' },
+  { key: 'volva',    label: 'volva',    latin: 'velamen primum',    text: 'execution host',      x: '0%', y: '18%', align: 'right' },
 ]
 
 /* Leader line endpoints for each annotation part (SVG coordinate space 400×420) */
@@ -23,7 +25,7 @@ const leaders: Record<string, { x1: number; y1: number; x2: number; y2: number; 
 
 export function HeroDiagram() {
   return (
-    <Box aria-label="Mushroom anatomy diagram mapped to ecosystem tools" className="hero-diagram">
+    <Box aria-label="Mushroom anatomy diagram mapped to ecosystem tools" className={styles['hero-diagram']}>
       <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 400 420">
         <defs>
           <radialGradient cx="50%" cy="60%" id="hd-cap" r="60%">
@@ -101,9 +103,9 @@ export function HeroDiagram() {
 
         {/* Leader lines — one per annotation */}
         {Object.entries(leaders).map(([part, l]) => (
-          <g className="hd-leader" data-part={part} key={part}>
+          <g className={styles['hd-leader']} data-part={part} key={part}>
             <path
-              className="hd-leader__line"
+              className={styles['hd-leader__line']}
               d={`M${l.x1} ${l.y1} L${l.x2} ${l.y2}`}
               fill="none"
               stroke="rgba(242,169,59,0.35)"
@@ -111,7 +113,7 @@ export function HeroDiagram() {
               strokeWidth="1"
             />
             <circle
-              className="hd-leader__dot"
+              className={styles['hd-leader__dot']}
               cx={l.dot.cx}
               cy={l.dot.cy}
               fill="rgba(242,169,59,0.6)"
@@ -123,7 +125,7 @@ export function HeroDiagram() {
 
       {annotations.map((annotation) => (
         <Text
-          className="hero-diagram__anno"
+          className={styles['hero-diagram__anno']}
           data-part={annotation.key}
           key={annotation.key}
           style={{ left: annotation.x, textAlign: annotation.align === 'right' ? 'right' : 'left', top: annotation.y }}

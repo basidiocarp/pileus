@@ -1,0 +1,147 @@
+.hero-diagram {
+  position: relative;
+  width: min(100%, 560px);
+  margin: 0 auto;
+  aspect-ratio: 1 / 1.05;
+  animation: hero-float 9s ease-in-out infinite alternate;
+}
+
+.hero-diagram svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hero-diagram__anno {
+  position: absolute;
+  width: 124px;
+  padding: 4px 6px;
+  color: var(--site-muted);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  line-height: 1.38;
+}
+
+.hero-diagram__anno b {
+  display: block;
+  color: var(--site-fg);
+  font-size: 13px;
+}
+
+.hero-diagram__anno span {
+  display: block;
+  color: var(--site-dim);
+  font-family: Roboto, serif;
+  font-style: italic;
+}
+
+#hd-roots path {
+  animation: roots-march 9s linear infinite;
+  stroke-dasharray: 60 6;
+}
+
+#hd-spores circle {
+  animation: spore-drift 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#hd-spores circle:nth-child(2n) {
+  animation-delay: 1.2s;
+  animation-duration: 7.1s;
+}
+
+#hd-spores circle:nth-child(3n) {
+  animation-delay: 2.4s;
+  animation-duration: 5.8s;
+}
+
+.hd-leader__line {
+  opacity: 0.55;
+  transition: stroke 200ms, opacity 200ms;
+}
+
+.hd-leader {
+  pointer-events: none;
+}
+
+.hd-leader__dot {
+  transition: fill 200ms, r 200ms;
+}
+
+.hero-diagram:has(.hero-diagram__anno[data-part="cap"]:hover) [data-part="cap"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(242,169,59,0.6)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="cap"]:hover) [data-part]:not([data-part="cap"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="cap"]:hover) .hd-leader[data-part="cap"] .hd-leader__line { stroke: rgba(242,169,59,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="cap"]:hover) .hd-leader[data-part="cap"] .hd-leader__dot { fill: #f2a93b; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="hymenium"]:hover) [data-part="hymenium"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(242,169,59,0.6)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="hymenium"]:hover) [data-part]:not([data-part="hymenium"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="hymenium"]:hover) .hd-leader[data-part="hymenium"] .hd-leader__line { stroke: rgba(242,169,59,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="hymenium"]:hover) .hd-leader[data-part="hymenium"] .hd-leader__dot { fill: #f2a93b; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="annulus"]:hover) [data-part="annulus"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(242,169,59,0.6)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="annulus"]:hover) [data-part]:not([data-part="annulus"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="annulus"]:hover) .hd-leader[data-part="annulus"] .hd-leader__line { stroke: rgba(242,169,59,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="annulus"]:hover) .hd-leader[data-part="annulus"] .hd-leader__dot { fill: #f2a93b; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="stipe"]:hover) [data-part="stipe"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(242,169,59,0.6)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="stipe"]:hover) [data-part]:not([data-part="stipe"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="stipe"]:hover) .hd-leader[data-part="stipe"] .hd-leader__line { stroke: rgba(242,169,59,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="stipe"]:hover) .hd-leader[data-part="stipe"] .hd-leader__dot { fill: #f2a93b; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="mycelium"]:hover) [data-part="mycelium"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(56,217,169,0.5)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="mycelium"]:hover) [data-part]:not([data-part="mycelium"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="mycelium"]:hover) .hd-leader[data-part="mycelium"] .hd-leader__line { stroke: rgba(56,217,169,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="mycelium"]:hover) .hd-leader[data-part="mycelium"] .hd-leader__dot { fill: #38d9a9; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="spore"]:hover) [data-part="spore"] { opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="spore"]:hover) [data-part]:not([data-part="spore"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="spore"]:hover) .hd-leader[data-part="spore"] .hd-leader__line { stroke: rgba(242,169,59,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="spore"]:hover) .hd-leader[data-part="spore"] .hd-leader__dot { fill: #f2a93b; r: 3.5; }
+
+.hero-diagram:has(.hero-diagram__anno[data-part="volva"]:hover) [data-part="volva"] { opacity: 1; filter: drop-shadow(0 0 6px rgba(177,151,252,0.5)); }
+.hero-diagram:has(.hero-diagram__anno[data-part="volva"]:hover) [data-part]:not([data-part="volva"]) { opacity: 0.3; }
+.hero-diagram:has(.hero-diagram__anno[data-part="volva"]:hover) .hd-leader[data-part="volva"] .hd-leader__line { stroke: rgba(177,151,252,0.9); opacity: 1; }
+.hero-diagram:has(.hero-diagram__anno[data-part="volva"]:hover) .hd-leader[data-part="volva"] .hd-leader__dot { fill: #b197fc; r: 3.5; }
+
+@media (max-width: 900px) {
+  .hero-diagram {
+    width: min(100%, 420px);
+  }
+
+  .hero-diagram__anno {
+    display: none;
+  }
+}
+
+@keyframes hero-float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes roots-march {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes spore-drift {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) translateX(8px);
+  }
+}

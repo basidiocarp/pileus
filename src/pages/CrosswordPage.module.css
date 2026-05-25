@@ -1,0 +1,112 @@
+.xw-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 50px;
+  margin-top: 32px;
+}
+
+.xw-board {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--site-border-strong);
+  background: var(--site-bg);
+}
+
+.xw-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  background: var(--site-crossword-cell);
+}
+
+.xw-cell--block {
+  background: var(--site-crossword-block);
+}
+
+.xw-num {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 7px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.xw-cell input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  color: var(--glow-spore);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.xw-cell input:focus {
+  background: var(--site-crossword-focus);
+}
+
+.xw-clues h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--glow-spore);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.xw-clues ol {
+  padding-left: 22px;
+  color: var(--site-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.xw-clues ol em {
+  color: var(--glow-spore);
+  font-style: italic;
+}
+
+.xw-solved {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding: 16px 20px;
+  border: 1px solid color-mix(in oklab, var(--glow-spore) 40%, var(--site-border));
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--glow-spore) 8%, transparent);
+}
+
+.xw-solved__glyph {
+  color: var(--glow-spore);
+  font-size: 20px;
+}
+
+.xw-solved__label {
+  color: var(--site-fg);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 14px;
+}
+
+.xw-solved__label em {
+  color: var(--glow-spore);
+  font-style: italic;
+}
+
+@media (max-width: 800px) {
+  .xw-grid {
+    grid-template-columns: 1fr;
+  }
+}

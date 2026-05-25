@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Box, Burger, Container, Group, Image, Stack, Text, UnstyledButton } from '@mantine/core'
+import { Box, Burger, Collapse, Container, Group, Image, Stack, Text, UnstyledButton } from '@mantine/core'
 import { NavLink, Link } from 'react-router-dom'
 
 import logo from '../assets/logo-basidiocarp.svg'
 import { StampDrawer } from './StampDrawer'
 import { useStampCount } from '../hooks/useStamp'
+import styles from './SiteShell.module.css'
 
 const navItems = [
   { to: '/ecosystem', label: 'ecosystem' },
@@ -22,20 +23,20 @@ export function SiteNav() {
 
   return (
     <>
-      <Box className="site-nav" component="nav">
+      <Box className={styles['site-nav']} component="nav">
         <Container size="xl" px="lg">
-          <Group className="site-nav__inner">
-            <Link className="brandmark" onClick={() => setMenuOpen(false)} to="/">
-              <Image alt="" className="brandmark__glyph" src={logo} />
+          <Group className={styles['site-nav__inner']}>
+            <Link className={styles.brandmark} onClick={() => setMenuOpen(false)} to="/">
+              <Image alt="" className={styles['brandmark__glyph']} src={logo} />
               <Text component="span">basidiocarp</Text>
-              <Text className="brandmark__pronun" component="span">/bəˈsɪdiəˌkɑːrp/</Text>
+              <Text className={styles['brandmark__pronun']} component="span">/bəˈsɪdiəˌkɑːrp/</Text>
             </Link>
 
-            <Group className="site-nav__links" gap={4}>
+            <Group className={styles['site-nav__links']} gap={4}>
               {navItems.map((item) => (
                 <NavLink
                   className={({ isActive }) =>
-                    isActive ? 'site-nav__link is-active' : 'site-nav__link'
+                    isActive ? `${styles['site-nav__link']} ${styles.active}` : styles['site-nav__link']
                   }
                   key={item.to}
                   onClick={() => setMenuOpen(false)}
@@ -44,21 +45,22 @@ export function SiteNav() {
                   {item.label}
                 </NavLink>
               ))}
-              <Link className="site-nav__cta" to="/install">stipe init →</Link>
+              <Link className={styles['site-nav__cta']} to="/install">stipe init →</Link>
             </Group>
 
-            <Group className="site-nav__end" gap={8}>
+            <Group className={styles['site-nav__end']} gap={8}>
               <UnstyledButton
                 aria-label={`${stampCount} of 9 specimens collected — open specimen log`}
-                className="stamp-trigger"
+                className={styles['stamp-trigger']}
                 onClick={() => setDrawerOpen(true)}
               >
-                <span className="stamp-trigger__dot" />
-                <span>{stampCount}<span className="stamp-trigger__of">/9</span></span>
+                <span className={styles['stamp-trigger__dot']} />
+                <span>{stampCount}<span className={styles['stamp-trigger__of']}>/9</span></span>
               </UnstyledButton>
               <Burger
                 aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-                className="nav-burger"
+                aria-controls="site-mobile-nav"
+                className={styles['nav-burger']}
                 color="var(--fg-2)"
                 opened={menuOpen}
                 onClick={() => setMenuOpen((v) => !v)}
@@ -68,12 +70,12 @@ export function SiteNav() {
           </Group>
         </Container>
 
-        {menuOpen && (
-          <Box className="mobile-nav">
+        <Collapse expanded={menuOpen} id="site-mobile-nav">
+          <Box className={styles['mobile-nav']}>
             {navItems.map((item) => (
               <NavLink
                 className={({ isActive }) =>
-                  isActive ? 'mobile-nav__link is-active' : 'mobile-nav__link'
+                  isActive ? `${styles['mobile-nav__link']} ${styles.active}` : styles['mobile-nav__link']
                 }
                 key={item.to}
                 onClick={() => setMenuOpen(false)}
@@ -83,7 +85,7 @@ export function SiteNav() {
               </NavLink>
             ))}
           </Box>
-        )}
+        </Collapse>
       </Box>
 
       <StampDrawer onClose={() => setDrawerOpen(false)} opened={drawerOpen} />
@@ -93,15 +95,15 @@ export function SiteNav() {
 
 export function SiteFooter() {
   return (
-    <Box className="site-foot" component="footer">
+    <Box className={styles['site-foot']} component="footer">
       <Container size="xl">
-        <Group align="flex-start" className="site-foot__grid">
+        <Group align="flex-start" className={styles['site-foot__grid']}>
           <Stack gap="xs" maw={440}>
             <Group gap="xs">
-              <Image alt="" className="brandmark__glyph" src={logo} />
-              <Text className="footer-brand">basidiocarp</Text>
+              <Image alt="" className={styles['brandmark__glyph']} src={logo} />
+              <Text className={styles['footer-brand']}>basidiocarp</Text>
             </Group>
-            <Text className="site-foot__lat">
+            <Text className={styles['site-foot__lat']}>
               the visible fruiting body of an underground agent tooling network
             </Text>
           </Stack>
@@ -111,17 +113,17 @@ export function SiteFooter() {
             { title: 'Memory',   items: ['hyphae', 'cortina'] },
             { title: 'Runtime',  items: ['mycelium', 'rhizome'] },
           ].map(({ title, items }) => (
-            <Stack className="site-foot__col" gap={6} key={title}>
+            <Stack className={styles['site-foot__col']} gap={6} key={title}>
               <Text component="h4">{title}</Text>
               {items.map((item) => (
-                <Link className="site-foot__link" key={item} to={`/tools#${item}`}>
+                <Link className={styles['site-foot__link']} key={item} to={`/tools#${item}`}>
                   {item}
                 </Link>
               ))}
             </Stack>
           ))}
         </Group>
-        <Group className="site-foot__bottom" justify="space-between">
+        <Group className={styles['site-foot__bottom']} justify="space-between">
           <Text>MIT licensed</Text>
           <Text>Rust + TypeScript</Text>
         </Group>

@@ -1,0 +1,31 @@
+.layers {
+  margin-top: 56px;
+}
+
+.layer-row {
+  padding: 24px 0;
+  border-top: 1px solid var(--site-border);
+}
+
+.layer-row:last-child {
+  border-bottom: 1px solid var(--site-border);
+}
+
+.layer-row h3 {
+  color: var(--site-fg);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.layer-row__num {
+  margin-bottom: 6px;
+  color: var(--glow-spore);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+.layer-row__note {
+  color: var(--site-muted);
+  font-size: 13px;
+}

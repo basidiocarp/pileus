@@ -1,9 +1,25 @@
 import { useState } from 'react'
-import { Badge, Box, Button, Container, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import {
+  Badge,
+  Box,
+  Card,
+  Chip,
+  Container,
+  Group,
+  SegmentedControl,
+  SimpleGrid,
+  Stack,
+  Text,
+  Timeline,
+  Title,
+} from '@mantine/core'
 
 import { SectionHeader } from '../components/SectionHeader'
+import { ToolColorCard } from '../components/ToolColorCard'
 import { tools as ecosystemTools } from '../data/ecosystem'
 import { useStamp } from '../hooks/useStamp'
+import shared from '../styles/shared.module.css'
+import styles from './ChangelogPage.module.css'
 
 type ChangeKind = 'added' | 'changed' | 'fixed'
 
@@ -70,7 +86,7 @@ export function ChangelogPage() {
   const groups = groupByDate(filtered)
 
   return (
-    <Box className="page-changelog" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
         <SectionHeader
           label="06 / Changelog"
@@ -78,96 +94,84 @@ export function ChangelogPage() {
           subtitle="CALENDARIVM · recently shipped"
         />
 
-        <Box className="cl-hero" mt="xl">
-          <Text className="latin cl-lede">
+        <Box className={styles['cl-hero']} mt="xl">
+          <Text className={`${shared.latin} ${styles['cl-lede']}`}>
             A merged feed of every CHANGELOG.md across the twelve repos. Filter by tool or by
             change type. Newest first.
           </Text>
 
           <SimpleGrid cols={{ base: 2, sm: 4 }} mt="xl" spacing="md">
             {STATS.map((s) => (
-              <Box className="cl-stat" key={s.k}>
-                <Text className="cl-stat__v"><em>{s.v}</em></Text>
-                <Text className="cl-stat__k">{s.k}</Text>
-              </Box>
+              <Card className={styles['cl-stat']} key={s.k} padding="lg" radius="md">
+                <Text className={styles['cl-stat__v']}><em>{s.v}</em></Text>
+                <Text className={styles['cl-stat__k']}>{s.k}</Text>
+              </Card>
             ))}
           </SimpleGrid>
 
-          <Box className="cl-filters">
-            <Box className="filter-row">
-              {(['all', 'added', 'changed', 'fixed'] as const).map((k) => (
-                <Button
-                  aria-pressed={kindFilter === k}
-                  key={k}
-                  onClick={() => setKindFilter(k)}
-                  size="compact-sm"
-                  type="button"
-                  variant={kindFilter === k ? 'filled' : 'subtle'}
-                >
-                  {k}
-                </Button>
-              ))}
-            </Box>
-            <Box className="filter-row">
-              <Button
-                aria-pressed={toolFilter === 'all'}
-                onClick={() => setToolFilter('all')}
-                size="compact-sm"
-                type="button"
-                variant={toolFilter === 'all' ? 'filled' : 'subtle'}
-              >
-                all tools
-              </Button>
-              {ALL_TOOLS.map((t) => (
-                <Button
-                  aria-pressed={toolFilter === t}
-                  key={t}
-                  onClick={() => setToolFilter(t)}
-                  size="compact-sm"
-                  type="button"
-                  variant={toolFilter === t ? 'filled' : 'subtle'}
-                >
-                  {t}
-                </Button>
-              ))}
-            </Box>
+          <Box className={styles['cl-filters']}>
+            <SegmentedControl
+              className={`${styles['filter-row']} ${styles['filter-row--segmented']}`}
+              data={['all', 'added', 'changed', 'fixed']}
+              onChange={setKindFilter}
+              value={kindFilter}
+            />
+            <Chip.Group value={toolFilter} onChange={setToolFilter}>
+              <Group className={styles['filter-row']} gap={4}>
+                <Chip type="radio" value="all">
+                  all tools
+                </Chip>
+                {ALL_TOOLS.map((t) => (
+                  <Chip key={t} type="radio" value={t}>
+                    {t}
+                  </Chip>
+                ))}
+              </Group>
+            </Chip.Group>
           </Box>
         </Box>
 
-        <Stack className="cl-timeline" gap={0}>
+        <Timeline active={groups.length} bulletSize={12} className={styles['cl-timeline']} color="brandSpore" lineWidth={1}>
           {groups.map(([date, entries]) => (
-            <Box className="tl-day" key={date}>
-              <Text className="tl-day__label">
-                <span className="date">{date}</span>
-                {entries.length} release{entries.length !== 1 ? 's' : ''}
-              </Text>
+            <Timeline.Item
+              className={styles['tl-day']}
+              key={date}
+              title={
+                <Text className={styles['tl-day__label']}>
+                  <span className={styles.date}>{date}</span>
+                  {entries.length} release{entries.length !== 1 ? 's' : ''}
+                </Text>
+              }
+            >
               <Stack gap="sm">
                 {entries.map((e, i) => (
-                  <Box
-                    className="tl-release"
+                  <ToolColorCard
+                    className={styles['tl-release']}
                     key={i}
-                    style={{ '--tool-color': ecosystemTools.find((t) => t.key === e.tool)?.color ?? 'var(--glow-spore)' } as React.CSSProperties}
+                    padding="md"
+                    radius="md"
+                    toolColor={ecosystemTools.find((t) => t.key === e.tool)?.color ?? 'var(--glow-spore)'}
                   >
-                    <Box className="tl-release__head">
-                      <Text className="tl-release__tool">{e.tool}</Text>
+                    <Box className={styles['tl-release__head']}>
+                      <Text className={styles['tl-release__tool']}>{e.tool}</Text>
                       <Badge radius="sm" size="xs" variant={"version" as string}>{e.ver}</Badge>
                       <Badge radius="sm" size="xs" variant={e.kind as string}>{e.kind}</Badge>
-                      <Text className="tl-release__lat">{e.lat}</Text>
+                      <Text className={styles['tl-release__lat']}>{e.lat}</Text>
                     </Box>
-                    <Text className="tl-release__msg">{e.msg}</Text>
-                  </Box>
+                    <Text className={styles['tl-release__msg']}>{e.msg}</Text>
+                  </ToolColorCard>
                 ))}
               </Stack>
-            </Box>
+            </Timeline.Item>
           ))}
           {filtered.length === 0 && (
-            <Text className="cl-empty">No entries match the current filter.</Text>
+            <Text className={styles['cl-empty']}>No entries match the current filter.</Text>
           )}
-        </Stack>
+        </Timeline>
 
-        <Box className="cl-footnote">
-          <Title className="cl-footnote__title" order={4}>On the matter of the thirteenth tool</Title>
-          <Text className="cl-footnote__sub">— septa absentia</Text>
+        <Box className={styles['cl-footnote']}>
+          <Title className={styles['cl-footnote__title']} order={4}>On the matter of the thirteenth tool</Title>
+          <Text className={styles['cl-footnote__sub']}>— septa absentia</Text>
           <Text>
             There are twelve repos. There is a thirteenth presence that appears in no changelog
             because it ships nothing. It only watches which walls between hyphae remain intact.

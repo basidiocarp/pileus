@@ -1,5 +1,7 @@
 import { Group, Text, Title } from '@mantine/core'
 
+import styles from './SectionHeader.module.css'
+
 type SectionHeaderProps = {
   label: string
   subtitle: string
@@ -8,12 +10,12 @@ type SectionHeaderProps = {
 
 export function SectionHeader({ label, subtitle, title }: SectionHeaderProps) {
   return (
-    <Group className="section-head" justify="space-between" wrap="nowrap">
-      <Text className="section-head__num">{label}</Text>
-      <Title className="section-head__title" order={2}>
+    <Group className={styles['section-head']} justify="space-between" wrap="nowrap">
+      <Text className={styles['section-head__num']}>{label}</Text>
+      <Title className={styles['section-head__title']} order={2}>
         {title}
       </Title>
-      <Text className="section-head__sub">{subtitle}</Text>
+      <Text className={styles['section-head__sub']}>{subtitle}</Text>
     </Group>
   )
 }

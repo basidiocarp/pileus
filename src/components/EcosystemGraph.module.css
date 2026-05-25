@@ -1,0 +1,119 @@
+.graph-card {
+  overflow: hidden;
+}
+
+.graph-card__chrome {
+  position: relative;
+  z-index: 2;
+  padding: 16px;
+  border-bottom: 1px solid var(--site-border);
+  background: rgba(13, 8, 5, 0.62);
+}
+
+.graph-card__legend {
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+}
+
+.graph-filter {
+  background: var(--site-sunken);
+}
+
+.graph-card__stage {
+  position: relative;
+  min-height: 560px;
+  overflow-x: auto;
+}
+
+.ecosystem-graph {
+  display: block;
+  width: 100%;
+  min-width: 900px;
+  height: auto;
+}
+
+.ecosystem-graph__node {
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.ecosystem-graph__node:focus-visible {
+  outline: none;
+}
+
+.ecosystem-graph__node:focus-visible .ecosystem-graph__core {
+  stroke: var(--glow-spore);
+  stroke-width: 3px;
+}
+
+.ecosystem-graph__core {
+  transition: r 180ms ease;
+}
+
+.ecosystem-graph__edge--active {
+  animation: dash-march 800ms linear infinite;
+}
+
+.ecosystem-graph__pulse {
+  opacity: 0;
+  animation: node-pulse 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.graph-card__tip {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: min(280px, calc(100% - 36px));
+  padding: 12px 14px;
+  border: 1px solid var(--site-border-strong);
+  border-radius: var(--mantine-radius-md);
+  background: rgba(8, 5, 3, 0.94);
+  color: var(--site-muted);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 12px;
+}
+
+.graph-card__tip b {
+  color: var(--glow-spore);
+  font-family: var(--mantine-font-family);
+  font-size: 14px;
+}
+
+.graph-card__tip span {
+  color: var(--site-dim);
+  font-family: Roboto, serif;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .graph-card__chrome {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .graph-card__stage {
+    min-height: 480px;
+  }
+}
+
+@keyframes dash-march {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    r: 14;
+  }
+
+  50% {
+    opacity: 0.4;
+    r: 24;
+  }
+}

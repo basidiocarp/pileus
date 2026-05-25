@@ -27,8 +27,8 @@ export const badgeStyles = createTheme({
           case 'added':
             return {
               root: {
-                background: 'rgba(76,175,80,0.15)',
-                color: '#a3d97c',
+                background: 'var(--site-success-wash)',
+                color: 'var(--site-success)',
                 border: '1px solid transparent',
                 fontFamily: 'var(--mantine-font-family-monospace)',
                 letterSpacing: '0.06em',
@@ -38,7 +38,7 @@ export const badgeStyles = createTheme({
           case 'changed':
             return {
               root: {
-                background: 'rgba(242,169,59,0.15)',
+                background: 'var(--site-spore-badge-bg)',
                 color: 'var(--glow-spore)',
                 border: '1px solid transparent',
                 fontFamily: 'var(--mantine-font-family-monospace)',
@@ -49,7 +49,7 @@ export const badgeStyles = createTheme({
           case 'fixed':
             return {
               root: {
-                background: 'rgba(177,151,252,0.15)',
+                background: 'var(--site-purple-badge-bg)',
                 color: 'var(--glow-purple)',
                 border: '1px solid transparent',
                 fontFamily: 'var(--mantine-font-family-monospace)',

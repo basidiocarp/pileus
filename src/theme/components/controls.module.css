@@ -1,0 +1,61 @@
+.burgerRoot {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--mantine-radius-md);
+  transition: border-color 150ms;
+}
+
+.burgerRoot:hover {
+  border-color: var(--border-3);
+}
+
+.closeButtonRoot {
+  color: var(--site-dim);
+}
+
+.closeButtonRoot:hover {
+  color: var(--glow-spore);
+}
+
+.navLinkRoot {
+  border-left: 2px solid transparent;
+  color: var(--site-muted);
+  transition: background 120ms, color 120ms, border-color 120ms;
+}
+
+.navLinkRoot:hover {
+  background: var(--site-hover-wash);
+  color: var(--site-fg);
+}
+
+.navLinkRoot[data-active] {
+  background: var(--site-spore-active-wash);
+  border-left-color: var(--glow-spore);
+  color: var(--glow-spore);
+}
+
+.tabsList {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--site-border-strong);
+  background: var(--site-overlay-strong);
+}
+
+.tabsTab {
+  height: 100%;
+  padding: 8px 14px;
+  border-right: 1px solid var(--site-border-strong);
+  background: var(--site-overlay-subtle);
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.tabsTab[data-active] {
+  padding-top: 6px;
+  border-top: 2px solid var(--glow-spore);
+  background: var(--site-terminal-bg);
+  color: var(--site-fg);
+}

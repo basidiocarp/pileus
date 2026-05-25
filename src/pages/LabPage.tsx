@@ -1,6 +1,8 @@
 import { Box, Button, Container, Text, Title } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useReadStamps, useStamp } from '../hooks/useStamp'
+import shared from '../styles/shared.module.css'
+import styles from './LabPage.module.css'
 
 const ENTRIES = [
   {
@@ -74,22 +76,22 @@ function LabContent() {
   useStamp('lab')
 
   return (
-    <Box className="page-lab" component="main">
+    <Box className={shared.page} component="main">
       <Container size="md">
-        <Text className="eyebrow" mb="xl"><span className="dot">●</span> lab notebook · vol. III · unlocked</Text>
-        <Box className="notebook">
-          <Text className="notebook__hd">FIELD NOTEBOOK · M. STAMETS · ENTRY VOL. III</Text>
-          <Title className="notebook__title" order={1}>On the persistence of the colony</Title>
-          <Text className="notebook__sub">— a private log, kept beneath the cap</Text>
+        <Text className={shared.eyebrow} mb="xl"><span className={shared.dot}>●</span> lab notebook · vol. III · unlocked</Text>
+        <Box className={styles.notebook}>
+          <Text className={styles['notebook__hd']}>FIELD NOTEBOOK · M. STAMETS · ENTRY VOL. III</Text>
+          <Title className={styles['notebook__title']} order={1}>On the persistence of the colony</Title>
+          <Text className={styles['notebook__sub']}>— a private log, kept beneath the cap</Text>
 
           {ENTRIES.map((entry, i) => (
-            <Box className="notebook__entry" key={i}>
-              <Text className="notebook__day" component="span">{entry.day}</Text>
+            <Box className={styles['notebook__entry']} key={i}>
+              <Text className={styles['notebook__day']} component="span">{entry.day}</Text>
               {entry.text}
             </Box>
           ))}
 
-          <Box className="notebook__seal">EX OBS<br />S/N 09</Box>
+          <Box className={styles['notebook__seal']}>EX OBS<br />S/N 09</Box>
         </Box>
       </Container>
     </Box>
@@ -102,13 +104,13 @@ export function LabPage() {
 
   if (!unlocked) {
     return (
-      <Box className="page-lab" component="main">
+      <Box className={shared.page} component="main">
         <Container size="xl">
-          <Box className="lab-gate">
-            <Text className="eyebrow"><span className="dot">●</span> lab notebook · locus secretus</Text>
-            <Title className="lab-gate__title" order={2}>The lab notebook is sealed.</Title>
-            <Text className="latin">Collect at least 7 specimen stamps to unlock this page.</Text>
-            <Text className="lab-gate__hint">
+          <Box className={styles['lab-gate']}>
+            <Text className={shared.eyebrow}><span className={shared.dot}>●</span> lab notebook · locus secretus</Text>
+            <Title className={styles['lab-gate__title']} order={2}>The lab notebook is sealed.</Title>
+            <Text className={shared.latin}>Collect at least 7 specimen stamps to unlock this page.</Text>
+            <Text className={styles['lab-gate__hint']}>
               Visit each page in the site. Your stamps appear in the drawer at the top-right.
             </Text>
             <Button component={Link} mt="xl" to="/" variant="outline">← back to the surface</Button>

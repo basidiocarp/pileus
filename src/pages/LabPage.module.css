@@ -1,0 +1,107 @@
+.lab-gate {
+  max-width: 520px;
+  padding: 40px;
+  margin: 80px auto;
+  border: 1px dashed var(--site-border-strong);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.lab-gate__title {
+  margin-bottom: 14px;
+  color: var(--glow-spore);
+  font-family: Roboto, serif;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.lab-gate__hint {
+  margin-top: 20px;
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 12px;
+}
+
+.notebook {
+  position: relative;
+  max-width: 760px;
+  padding: 50px 60px;
+  margin: 0 auto;
+  border: 1px solid var(--site-border-strong);
+  border-radius: 4px;
+  background:
+    var(--site-notebook-bg),
+    var(--site-notebook-rule);
+  box-shadow: var(--site-terminal-shadow);
+}
+
+.notebook::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 80px;
+  width: 1px;
+  content: "";
+  background: var(--site-cap-line);
+}
+
+.notebook__hd {
+  margin-bottom: 28px;
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.notebook__title {
+  margin-bottom: 6px;
+  color: var(--site-fg);
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.notebook__sub {
+  display: block;
+  margin-bottom: 36px;
+  color: var(--glow-spore);
+  font-family: Roboto, serif;
+  font-style: italic;
+}
+
+.notebook__entry {
+  margin-bottom: 26px;
+  color: var(--site-terminal-text);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.notebook__entry em {
+  color: var(--glow-spore);
+}
+
+.notebook__day {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--site-dim);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.notebook__seal {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  padding: 8px 14px;
+  border: 2px solid var(--glow-cap);
+  border-radius: 4px;
+  color: var(--glow-cap);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  line-height: 1.6;
+  text-align: center;
+  opacity: 0.4;
+  transform: rotate(-12deg);
+}

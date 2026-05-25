@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import { Box, Card, Group, SegmentedControl, Stack, Text } from '@mantine/core'
 
 import { edges, layers, tools, type EcosystemLayerKey, type EcosystemToolKey } from '../data/ecosystem'
+import styles from './EcosystemGraph.module.css'
 
 type Position = { x: number; y: number }
 
@@ -53,10 +55,20 @@ export function EcosystemGraph() {
 
   const selectedTool = tools.find((tool) => tool.key === activeTool)
 
+  const activateTool = (toolKey: EcosystemToolKey) => {
+    setActiveTool(toolKey)
+  }
+
+  const handleNodeKeyDown = (event: KeyboardEvent<SVGGElement>, toolKey: EcosystemToolKey) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    event.preventDefault()
+    activateTool(toolKey)
+  }
+
   return (
-    <Card className="graph-card" id="ecosystem-graph" padding={0} radius="lg">
-      <Group className="graph-card__chrome" justify="space-between">
-        <Group className="graph-card__legend" gap="md">
+    <Card className={styles['graph-card']} id="ecosystem-graph" padding={0} radius="lg">
+      <Group className={styles['graph-card__chrome']} justify="space-between">
+        <Group className={styles['graph-card__legend']} gap="md">
           <Group align="center" gap={6}>
             <svg fill="none" height="8" viewBox="0 0 20 8" width="20">
               <line stroke="#6b4d38" strokeWidth="1.5" x1="0" x2="20" y1="4" y2="4" />
@@ -71,7 +83,7 @@ export function EcosystemGraph() {
           </Group>
         </Group>
         <SegmentedControl
-          className="graph-filter"
+          className={styles['graph-filter']}
           data={[
             { label: 'all', value: 'all' },
             { label: 'surface', value: 'surface' },
@@ -81,13 +93,12 @@ export function EcosystemGraph() {
             { label: 'infra', value: 'infrastructure' },
           ]}
           onChange={setFilter}
-          size="xs"
           value={filter}
         />
       </Group>
 
-      <Box className="graph-card__stage">
-        <svg className="ecosystem-graph" viewBox={`0 0 ${graphWidth} ${graphHeight}`}>
+      <Box className={styles['graph-card__stage']}>
+        <svg className={styles['ecosystem-graph']} viewBox={`0 0 ${graphWidth} ${graphHeight}`}>
           <defs>
             <pattern height="20" id="dotgrid" patternUnits="userSpaceOnUse" width="20">
               <circle cx="1" cy="1" fill="#1f150c" r="0.6" />
@@ -123,7 +134,7 @@ export function EcosystemGraph() {
 
             return (
               <path
-                className={involved ? 'ecosystem-graph__edge ecosystem-graph__edge--active' : 'ecosystem-graph__edge'}
+                className={involved ? styles['ecosystem-graph__edge--active'] : undefined}
                 d={`M${pa.x},${pa.y} Q${mx},${cy} ${pb.x},${pb.y}`}
                 fill="none"
                 key={`${a}-${b}`}
@@ -144,22 +155,25 @@ export function EcosystemGraph() {
 
             return (
               <g
-                className="ecosystem-graph__node"
+                className={styles['ecosystem-graph__node']}
                 key={tool.key}
                 onBlur={() => setActiveTool(null)}
+                onClick={() => activateTool(tool.key)}
                 onFocus={() => setActiveTool(tool.key)}
+                onKeyDown={(event) => handleNodeKeyDown(event, tool.key)}
                 onMouseEnter={() => setActiveTool(tool.key)}
                 onMouseLeave={() => setActiveTool(null)}
                 opacity={opacity}
                 aria-label={`${tool.name}: ${tool.role}`}
+                aria-pressed={isActive}
                 role="button"
                 tabIndex={0}
                 transform={`translate(${position.x}, ${position.y})`}
               >
                 <circle fill="transparent" opacity="0.4" r="28" stroke={tool.color} strokeWidth="0.6" />
                 <circle fill={tool.color} opacity={isActive ? 0.25 : 0.08} r={isActive ? 32 : 22} />
-                <circle className="ecosystem-graph__core" fill={tool.color} r={isActive ? 18 : 14} />
-                <circle className="ecosystem-graph__pulse" fill="none" r="14" stroke={tool.color} strokeWidth="1" />
+                <circle className={styles['ecosystem-graph__core']} fill={tool.color} r={isActive ? 18 : 14} />
+                <circle className={styles['ecosystem-graph__pulse']} fill="none" r="14" stroke={tool.color} strokeWidth="1" />
                 <text fill="#f4ead8" fontFamily="JetBrains Mono" fontSize="12" fontWeight="500" textAnchor="middle" y="46">
                   {tool.name.toLowerCase()}
                 </text>
@@ -172,7 +186,7 @@ export function EcosystemGraph() {
         </svg>
 
         {selectedTool ? (
-          <Stack className="graph-card__tip" gap={2}>
+          <Stack className={styles['graph-card__tip']} gap={2}>
             <Text component="b">{selectedTool.name.toLowerCase()}</Text>
             <Text component="span">{selectedTool.latin}</Text>
             <Text>{selectedTool.role}</Text>

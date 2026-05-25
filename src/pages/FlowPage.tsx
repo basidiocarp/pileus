@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { ActionIcon, Box, Container, Text } from '@mantine/core'
+import { ActionIcon, Box, Container, Slider, Text } from '@mantine/core'
 
 import { SectionHeader } from '../components/SectionHeader'
+import { TerminalFrame } from '../components/TerminalFrame'
 import { useStamp } from '../hooks/useStamp'
+import shared from '../styles/shared.module.css'
+import styles from './FlowPage.module.css'
 
 type Stage = {
   label: string
@@ -87,8 +90,6 @@ export function FlowPage() {
   const rafRef = useRef<number | null>(null)
   const startRef = useRef<number | null>(null)
   const baseRef = useRef<number>(0)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const draggingRef = useRef(false)
 
   const stageIndex = (() => {
     let elapsed = 0
@@ -154,28 +155,14 @@ export function FlowPage() {
     }
   }
 
-  const scrubTo = (clientX: number) => {
-    if (!trackRef.current) return
-    const rect = trackRef.current.getBoundingClientRect()
-    const p = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-    baseRef.current = p * TOTAL_DURATION
+  const handleScrubChange = (value: number) => {
+    baseRef.current = value * TOTAL_DURATION
     startRef.current = null
-    setProgress(p)
+    setProgress(value)
   }
 
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => { if (draggingRef.current) scrubTo(e.clientX) }
-    const onUp = () => { draggingRef.current = false }
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseup', onUp)
-    return () => {
-      document.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseup', onUp)
-    }
-  }, []) // scrubTo only closes over refs and stable setState
-
   return (
-    <Box className="page-flow" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
         <SectionHeader
           label="04 / Flow"
@@ -183,64 +170,62 @@ export function FlowPage() {
           subtitle="one prompt, six layers"
         />
 
-        <Box className="scrubber">
-          <Box className="scrub-bar">
-            <Box className="lights">
-              <span /><span /><span />
-            </Box>
-            <Text>basidiocarp pipeline · interactive trace</Text>
-          </Box>
-
-          <Box className="scrub-body">
-            <Box className="scrub-term">
+        <TerminalFrame
+          bodyClassName={styles['scrub-body']}
+          footer={(
+            <>
+              <ActionIcon
+                aria-label={progress >= 1 ? 'Restart' : playing ? 'Pause' : 'Play'}
+                onClick={handlePlayPause}
+                size="lg"
+              >
+                {playing ? '⏸' : '▶'}
+              </ActionIcon>
+              <Slider
+                className={styles['scrub-track']}
+                max={1}
+                min={0}
+                onChange={handleScrubChange}
+                precision={3}
+                step={0.001}
+                thumbLabel="Trace progress"
+                value={progress}
+              />
+              <Text className={styles['scrub-time']}>
+                {(progress * TOTAL_DURATION).toFixed(1)}s / {TOTAL_DURATION.toFixed(1)}s
+              </Text>
+            </>
+          )}
+          footerClassName={styles['scrub-controls']}
+          title="basidiocarp pipeline · interactive trace"
+        >
+            <Box className={styles['scrub-term']}>
               {visibleLines.map((line, i) => (
-                <Box className="scrub-row" key={`${line.stageIdx}-${i}`}>
+                <Box className={styles['scrub-row']} key={`${line.stageIdx}-${i}`}>
                   {line.kind === 'prompt' ? (
-                    <><span className="pr">›</span><span>{line.text}</span></>
+                    <><span className={styles.pr}>›</span><span>{line.text}</span></>
                   ) : (
-                    <><span className="pad">  </span><span className={line.kind}>{line.text}</span></>
+                    <><span className={styles.pad}>  </span><span className={styles[line.kind]}>{line.text}</span></>
                   )}
                 </Box>
               ))}
             </Box>
 
-            <Box className="scrub-side">
+            <Box className={styles['scrub-side']}>
               <Text component="h4">stages</Text>
               {STAGES.map((stage, i) => (
                 <Box
-                  className={`scrub-step${i === stageIndex ? ' is-current' : ''}`}
+                  className={`${styles['scrub-step']}${i === stageIndex ? ` ${styles['is-current']}` : ''}`}
                   key={stage.label}
                 >
-                  <Text className="label" component="span">
+                  <Text className={styles.label} component="span">
                     {String(i + 1).padStart(2, '0')} {stage.label}
                   </Text>
                   {i === stageIndex && stage.detail}
                 </Box>
               ))}
             </Box>
-          </Box>
-
-          <Box className="scrub-controls">
-            <ActionIcon
-              aria-label={progress >= 1 ? 'Restart' : playing ? 'Pause' : 'Play'}
-              onClick={handlePlayPause}
-              size="lg"
-            >
-              {playing ? '⏸' : '▶'}
-            </ActionIcon>
-            <Box
-              className="scrub-track"
-              onMouseDown={(e) => { draggingRef.current = true; scrubTo(e.clientX) }}
-              ref={trackRef}
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-            >
-              <Box className="scrub-fill" style={{ transform: `scaleX(${progress})` }} />
-            </Box>
-            <Text className="scrub-time" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--fg-3)' }}>
-              {(progress * TOTAL_DURATION).toFixed(1)}s / {TOTAL_DURATION.toFixed(1)}s
-            </Text>
-          </Box>
-        </Box>
+        </TerminalFrame>
       </Container>
     </Box>
   )

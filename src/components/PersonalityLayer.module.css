@@ -1,0 +1,236 @@
+.ambient-flares {
+  position: fixed;
+  inset: -20vh -10vw;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(42px);
+  --amb-base: 0.62;
+  background:
+    radial-gradient(60vw 70vh at 18% 8%, color-mix(in oklab, var(--glow-spore) 30%, transparent) 0%, transparent 75%),
+    radial-gradient(70vw 80vh at 88% 32%, color-mix(in oklab, var(--glow-cap) 22%, transparent) 0%, transparent 80%),
+    radial-gradient(80vw 90vh at 30% 78%, color-mix(in oklab, var(--glow-mycelium) 18%, transparent) 0%, transparent 85%),
+    radial-gradient(70vw 80vh at 82% 96%, color-mix(in oklab, var(--glow-cap) 16%, transparent) 0%, transparent 80%);
+  animation: ambient-breath 14s ease-in-out infinite alternate;
+}
+
+.spore-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.spore-field canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+}
+
+.weather-readout,
+.spore-counter,
+.moon-glyph,
+.spore-btn {
+  position: fixed;
+  z-index: 30;
+  border: 1px solid var(--site-border-strong);
+  background: rgba(13, 8, 5, 0.78);
+  color: var(--site-muted);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 10.5px;
+  backdrop-filter: blur(10px);
+}
+
+.weather-readout {
+  bottom: 14px;
+  left: 14px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  pointer-events: none;
+}
+
+.weather-readout__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: var(--glow-mycelium);
+  box-shadow: 0 0 10px var(--glow-mycelium);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+.sep {
+  color: var(--site-dimmer);
+}
+
+.mood,
+.season-label {
+  color: var(--glow-spore);
+  font-family: Roboto, serif;
+  font-style: italic;
+}
+
+.spore-counter {
+  right: 14px;
+  bottom: 14px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  pointer-events: none;
+}
+
+.spore-counter__lbl {
+  color: var(--site-dim);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spore-counter__n {
+  color: var(--glow-spore);
+  font-variant-numeric: tabular-nums;
+}
+
+.moon-glyph {
+  top: 78px;
+  right: 14px;
+  padding: 5px 10px;
+  border-radius: 99px;
+}
+
+.moon-glyph__sym {
+  color: var(--site-fg);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.moon-glyph__lbl {
+  color: var(--site-dim);
+  font-family: Roboto, serif;
+  font-style: italic;
+}
+
+.spore-btn {
+  top: 124px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  color: var(--site-muted);
+}
+
+.spore-btn:hover {
+  border-color: var(--glow-spore);
+  color: var(--glow-spore);
+}
+
+.puff-spore {
+  position: fixed;
+  z-index: 100;
+  width: var(--sz);
+  height: var(--sz);
+  border-radius: 99px;
+  pointer-events: none;
+  background: var(--glow-spore);
+  box-shadow: 0 0 8px var(--glow-spore);
+  animation: puff var(--dur) cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
+}
+
+.myc-trail {
+  position: fixed;
+  z-index: 99;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(to right, rgba(56, 217, 169, 0.55), rgba(56, 217, 169, 0));
+  transform-origin: 0 50%;
+  animation: myc-fade 1.2s ease-out forwards;
+}
+
+:global(.sporing) header,
+:global(.sporing) section {
+  animation: page-spore 1.6s ease both;
+}
+
+@media (max-width: 900px) {
+  .weather-readout {
+    right: 14px;
+    max-width: calc(100vw - 28px);
+  }
+
+  .season-label,
+  .moon-glyph {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moon-glyph,
+  .spore-btn {
+    display: none !important;
+  }
+}
+
+@keyframes ambient-breath {
+  0% {
+    opacity: var(--amb-base, 0.55);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    opacity: calc(var(--amb-base, 0.55) * 1.15);
+    transform: translate3d(1%, -1%, 0) scale(1.04);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes puff {
+  0% {
+    opacity: 0.95;
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.4);
+  }
+}
+
+@keyframes myc-fade {
+  from {
+    opacity: 0.7;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-spore {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+
+  40%,
+  60% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}

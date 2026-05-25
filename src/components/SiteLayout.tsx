@@ -3,10 +3,11 @@ import { Outlet, ScrollRestoration } from 'react-router-dom'
 
 import { PersonalityLayer } from './PersonalityLayer'
 import { SiteFooter, SiteNav } from './SiteShell'
+import styles from './SiteLayout.module.css'
 
 export function SiteLayout() {
   return (
-    <Box className="site">
+    <Box className={styles.site}>
       <ScrollRestoration />
       <PersonalityLayer />
       <SiteNav />

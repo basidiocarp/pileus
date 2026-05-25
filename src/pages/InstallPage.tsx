@@ -1,8 +1,11 @@
-import { Box, Code, Container, Grid, Group, Stack, Text, Title, UnstyledButton } from '@mantine/core'
+import { Box, Code, Container, Grid, SegmentedControl, Stack, Text, Title } from '@mantine/core'
 import { useState } from 'react'
 
 import { SectionHeader } from '../components/SectionHeader'
+import { TerminalFrame } from '../components/TerminalFrame'
 import { useStamp } from '../hooks/useStamp'
+import shared from '../styles/shared.module.css'
+import styles from './InstallPage.module.css'
 
 const hosts = [
   {
@@ -66,7 +69,7 @@ export function InstallPage() {
   const host = hosts.find((h) => h.key === activeHost) ?? hosts[0]
 
   return (
-    <Box className="page-install" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
         <SectionHeader
           label="05 / Install"
@@ -74,43 +77,37 @@ export function InstallPage() {
           subtitle="from zero to colony"
         />
 
-        <Stack className="install-steps" gap="xl">
+        <Stack className={styles['install-steps']} gap="xl">
           {steps.map((step, i) => (
-            <Grid className="install-step" key={step.num}>
+            <Grid key={step.num}>
               <Grid.Col span={{ base: 12, md: 1 }}>
-                <Text className="install-step__num">{step.num}</Text>
+                <Text className={styles['install-step__num']}>{step.num}</Text>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 4 }}>
-                <Title className="install-step__title" order={3}>{step.title}</Title>
-                <Text className="latin install-step__latin">{step.latin}</Text>
-                <Text className="install-step__blurb">{step.blurb}</Text>
+                <Title className={styles['install-step__title']} order={3}>{step.title}</Title>
+                <Text className={`${shared.latin} ${styles['install-step__latin']}`}>{step.latin}</Text>
+                <Text className={styles['install-step__blurb']}>{step.blurb}</Text>
 
                 {i === 1 && (
-                  <Group className="host-tabs" gap={4} mt="md">
-                    {hosts.map((h) => (
-                      <UnstyledButton
-                        className={`host-tab${activeHost === h.key ? ' host-tab--active' : ''}`}
-                        key={h.key}
-                        onClick={() => setActiveHost(h.key)}
-                        type="button"
-                      >
-                        {h.label}
-                      </UnstyledButton>
-                    ))}
-                  </Group>
+                  <SegmentedControl
+                    className={styles['host-tabs']}
+                    data={hosts.map((h) => ({ label: h.label, value: h.key }))}
+                    mt="md"
+                    onChange={setActiveHost}
+                    value={activeHost}
+                  />
                 )}
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 7 }}>
-                <Box className="terminal-block">
-                  <Box className="terminal-block__bar">
-                    <span />
-                    <span />
-                    <span />
-                  </Box>
-                  <Code className="terminal-block__code" block>
+                <TerminalFrame
+                  bodyClassName={styles['terminal-block__body']}
+                  className={styles['terminal-block']}
+                  title={`${step.num} · ${step.title.toLowerCase()}`}
+                >
+                  <Code className={styles['terminal-block__code']} block>
                     {i === 1 ? host.config : step.terminal}
                   </Code>
-                </Box>
+                </TerminalFrame>
               </Grid.Col>
             </Grid>
           ))}

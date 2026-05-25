@@ -1,39 +1,43 @@
-import type { CSSProperties } from 'react'
-import { Anchor, Badge, Box, Button, Card, Code, Container, Grid, Group, List, Stack, Text, Title } from '@mantine/core'
+import { Anchor, Box, Button, Card, Code, Container, Grid, Group, List, Stack, Text, Title } from '@mantine/core'
 
 import { EcosystemGraph } from './EcosystemGraph'
 import { HeroDiagram } from './HeroDiagram'
 import { SectionHeader } from './SectionHeader'
+import { ToolBadge } from './ToolBadge'
+import { ToolCardSurface } from './ToolCardSurface'
 import { featuredTools, layers, tools } from '../data/ecosystem'
+import layerStyles from '../styles/ecosystemLayers.module.css'
+import shared from '../styles/shared.module.css'
+import styles from './MarketingPage.module.css'
 
 export function MarketingPage() {
   return (
     <Box id="top">
 
-      <Box className="hero" component="header">
+      <Box className={styles.hero} component="header">
         <Container size="xl">
           <Grid align="flex-start" gap={{ base: 40, md: 64 }}>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Stack gap="xl">
                 <Group gap="sm">
-                  <Box className="hero__pulse" />
-                  <Text className="eyebrow">ecosystem / v0.7.2 / 12 tools shipping</Text>
+                  <Box className={styles['hero__pulse']} />
+                  <Text className={shared.eyebrow}>ecosystem / v0.7.2 / 12 tools shipping</Text>
                 </Group>
 
                 <Stack gap="lg">
-                  <Title className="hero__title" order={1}>
+                  <Title className={styles['hero__title']} order={1}>
                     The visible fruit of an <Text component="em">underground</Text>{' '}
-                    <Text className="hero__title-cap" component="span">
+                    <Text className={styles['hero__title-cap']} component="span">
                       network.
                     </Text>
                   </Title>
-                  <Text className="hero__lede">
+                  <Text className={styles['hero__lede']}>
                     Basidiocarp is a harness for AI coding agents: memory, code intelligence, token shaping,
                     coordination, and an operator dashboard that makes the stack legible.
                   </Text>
                 </Stack>
 
-                <Group className="hero__meta" gap="xl">
+                <Group className={styles['hero__meta']} gap="xl">
                   {[
                     ['tools', '12', 'repos'],
                     ['language', 'rust', '+ ts'],
@@ -58,7 +62,7 @@ export function MarketingPage() {
                   </Button>
                 </Group>
 
-                <Group className="quickline" gap="xs">
+                <Group className={styles.quickline} gap="xs">
                   <Text>quick install</Text>
                   <Code>curl -fsSL https://stipe.sh/install.sh | sh</Code>
                 </Group>
@@ -71,13 +75,13 @@ export function MarketingPage() {
         </Container>
       </Box>
 
-      <Box className="manifesto" component="section">
+      <Box className={styles.manifesto} component="section">
         <Container size="xl">
           <Grid gap={{ base: 32, md: 80 }}>
             <Grid.Col span={{ base: 12, md: 4 }}>
-              <Stack className="field-note" gap="md">
-                <Text className="eyebrow">Field note / 001</Text>
-                <Text className="latin">
+              <Stack className={styles['field-note']} gap="md">
+                <Text className={shared.eyebrow}>Field note / 001</Text>
+                <Text className={shared.latin}>
                   Basidiomycota are not the visible mushroom alone. They are mostly invisible, a network of
                   hyphae woven through wood and soil.
                 </Text>
@@ -89,15 +93,15 @@ export function MarketingPage() {
                     ['spreads via', 'MCP, hooks, stdio'],
                   ].map(([term, description]) => (
                     <Grid.Col span={6} key={term}>
-                      <Text className="field-note__term">{term}</Text>
-                      <Text className="field-note__description">{description}</Text>
+                      <Text className={styles['field-note__term']}>{term}</Text>
+                      <Text className={styles['field-note__description']}>{description}</Text>
                     </Grid.Col>
                   ))}
                 </Grid>
               </Stack>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 8 }}>
-              <Stack className="manifesto__copy" gap="xl">
+              <Stack className={styles['manifesto__copy']} gap="xl">
                 <Text>
                   Most agent setups are chat plus a prompt. That works until the model forgets last week's bug,
                   test logs eat the context window, and parallel agents start overwriting each other's branches.
@@ -117,68 +121,65 @@ export function MarketingPage() {
         </Container>
       </Box>
 
-      <Box className="featured" component="section" id="tools">
+      <Box className={styles.featured} component="section" id="tools">
         <Container size="xl">
           <SectionHeader label="02 / Featured" subtitle="tier / headline / 5 of 12" title="Five fruiting bodies." />
           <Grid gap="md">
             {featuredTools.map((tool, index) => (
               <Grid.Col key={tool.key} span={{ base: 12, md: index < 2 ? 6 : 4 }}>
-                <Card
-                  className="tool-card"
+                <ToolCardSurface
+                  className={styles['tool-card']}
                   id={tool.key}
                   padding={index === 0 ? 'xl' : 'lg'}
                   radius="lg"
-                  style={{ '--tool-color': tool.color } as CSSProperties}
+                  toolColor={tool.color}
                 >
                   <Stack gap="md" h="100%">
                     <Group align="baseline" gap="sm">
-                      <Title className="tool-card__name" order={3}>
+                      <Title className={styles['tool-card__name']} order={3}>
                         {tool.name.toLowerCase()}
                       </Title>
-                      <Text className="tool-card__role">{tool.role}</Text>
+                      <Text className={styles['tool-card__role']}>{tool.role}</Text>
                     </Group>
-                    <Text className="tool-card__latin">{tool.latin}</Text>
-                    <Text className="tool-card__blurb">{tool.blurb}</Text>
-                    <Anchor className="tool-card__foot" display="flex" href={`https://${tool.repo}`} mt="auto" rel="noopener noreferrer" style={{ justifyContent: 'space-between' }} target="_blank" underline="never">
+                    <Text className={shared.latin}>{tool.latin}</Text>
+                    <Text className={styles['tool-card__blurb']}>{tool.blurb}</Text>
+                    <Anchor className={styles['tool-card__foot']} display="flex" href={`https://${tool.repo}`} mt="auto" rel="noopener noreferrer" target="_blank" underline="never">
                       <Text>{tool.repo}</Text>
-                      <Text className="tool-card__arrow">-&gt;</Text>
+                      <Text className={styles['tool-card__arrow']}>-&gt;</Text>
                     </Anchor>
                   </Stack>
-                </Card>
+                </ToolCardSurface>
               </Grid.Col>
             ))}
           </Grid>
         </Container>
       </Box>
 
-      <Box className="ecosystem" component="section" id="ecosystem">
+      <Box className={styles.ecosystem} component="section" id="ecosystem">
         <Container size="xl">
           <SectionHeader label="03 / Map" subtitle="surface -> infrastructure" title="The whole organism, mapped." />
           <EcosystemGraph />
 
-          <Stack className="layers" gap={0}>
+          <Stack className={layerStyles.layers} gap={0}>
             {layers.map((layer, index) => (
-              <Grid className="layer-row" gap="xl" key={layer.key}>
+              <Grid className={layerStyles['layer-row']} gap="xl" key={layer.key}>
                 <Grid.Col span={{ base: 12, md: 3 }}>
-                  <Text className="layer-row__num">/0{index + 1}</Text>
+                  <Text className={layerStyles['layer-row__num']}>/0{index + 1}</Text>
                   <Title order={3}>{layer.title}</Title>
-                  <Text className="latin">{layer.latin}</Text>
-                  <Text className="layer-row__note">{layer.note}</Text>
+                  <Text className={shared.latin}>{layer.latin}</Text>
+                  <Text className={layerStyles['layer-row__note']}>{layer.note}</Text>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 9 }}>
                   <Group gap="sm">
                     {tools
                       .filter((tool) => tool.layer === layer.key)
                       .map((tool) => (
-                        <Badge
+                        <ToolBadge
                           key={tool.key}
-                          radius="sm"
-                          size="xl"
-                          style={{ '--tool-color': tool.color } as CSSProperties}
-                          variant={"tool" as string}
+                          toolColor={tool.color}
                         >
                           {tool.name.toLowerCase()} / {tool.role}
-                        </Badge>
+                        </ToolBadge>
                       ))}
                   </Group>
                 </Grid.Col>
@@ -188,12 +189,12 @@ export function MarketingPage() {
         </Container>
       </Box>
 
-      <Box className="pair" component="section" id="why">
+      <Box className={styles.pair} component="section" id="why">
         <Container size="xl">
           <SectionHeader label="04 / Why" subtitle="north star" title="Three problems, one network." />
           <Grid gap="xl">
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Card className="pair-card pair-card--problem" padding="xl" radius="lg">
+              <Card className={styles['pair-card']} padding="xl" radius="lg">
                 <Title order={3}>Symptoms</Title>
                 <Text>
                   Agent sessions waste context on raw terminal output. Architectural decisions vanish when the
@@ -207,7 +208,7 @@ export function MarketingPage() {
               </Card>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Card className="pair-card pair-card--solution" padding="xl" radius="lg">
+              <Card className={`${styles['pair-card']} ${styles['pair-card--solution']}`} padding="xl" radius="lg">
                 <Title order={3}>Network response</Title>
                 <Text>
                   Compress what the model sees, persist what matters, route signals to the layer that owns them,
@@ -221,9 +222,9 @@ export function MarketingPage() {
               </Card>
             </Grid.Col>
           </Grid>
-          <Group className="install-strip" justify="space-between">
+          <Group className={styles['install-strip']} justify="space-between">
             <Stack gap={4}>
-              <Text className="eyebrow">Install path</Text>
+              <Text className={shared.eyebrow}>Install path</Text>
               <Code>curl -fsSL https://stipe.sh/install.sh | sh</Code>
             </Stack>
             <Anchor href="#top" underline="never">

@@ -1,0 +1,59 @@
+.site {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(13, 8, 5, 0.98), rgba(13, 8, 5, 1)),
+    var(--site-bg);
+  color: var(--site-fg);
+}
+
+:global(.season-autumn) .site {
+  --glow-spore: #ff8f4b;
+}
+
+:global(.season-spring) .site {
+  --glow-spore: #6dd99a;
+}
+
+:global(.season-summer) .site {
+  --glow-spore: #f2c93b;
+}
+
+:global(.season-winter) .site {
+  --glow-spore: #b0c4de;
+}
+
+.site a {
+  color: inherit;
+}
+
+.site :where(h1, h2, h3, p) {
+  margin: 0;
+}
+
+.site::before {
+  position: fixed;
+  inset: -30vh -20vw;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(35vw 35vw at 20% 20%, rgba(242, 169, 59, 0.05), transparent 60%),
+    radial-gradient(40vw 40vw at 80% 70%, rgba(56, 217, 169, 0.04), transparent 65%);
+  filter: blur(20px);
+  animation: ambient-drift 38s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, 2%, 0) scale(1.06);
+  }
+
+  100% {
+    transform: translate3d(-1%, 1%, 0) scale(1.02);
+  }
+}

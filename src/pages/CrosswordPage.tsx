@@ -3,6 +3,8 @@ import { Box, Container, List, Text, Title } from '@mantine/core'
 
 import { SectionHeader } from '../components/SectionHeader'
 import { useStamp } from '../hooks/useStamp'
+import shared from '../styles/shared.module.css'
+import styles from './CrosswordPage.module.css'
 
 // Grid key:
 //   Across  1: CANOPY    row 0  cols 5-10
@@ -82,7 +84,7 @@ export function CrosswordPage() {
     ), [cells])
 
   return (
-    <Box className="page-crossword" component="main">
+    <Box className={shared.page} component="main">
       <Container size="xl">
         <SectionHeader
           label="easter egg · acrosticum fungorum"
@@ -90,18 +92,18 @@ export function CrosswordPage() {
           subtitle="A small crossword, all answers latin or fungal. Solve for the joy of it."
         />
 
-        <Box className="xw-grid">
-          <Box className="xw-board" ref={boardRef}>
+        <Box className={styles['xw-grid']}>
+          <Box className={styles['xw-board']} ref={boardRef}>
             {GRID.map((row, r) => (
               <Fragment key={r}>
                 {[...row].map((ch, c) => {
                   const clueNum = CLUE_NUMBERS[`${r},${c}`]
                   return (
                     <Box
-                      className={`xw-cell${ch === '#' ? ' xw-cell--block' : ''}`}
+                      className={`${styles['xw-cell']}${ch === '#' ? ` ${styles['xw-cell--block']}` : ''}`}
                       key={`${r}-${c}`}
                     >
-                      {clueNum && <span className="xw-num">{clueNum}</span>}
+                      {clueNum && <span className={styles['xw-num']}>{clueNum}</span>}
                       {ch !== '#' && (
                         <input
                           aria-label={`row ${r + 1}, column ${c + 1}`}
@@ -118,7 +120,7 @@ export function CrosswordPage() {
             ))}
           </Box>
 
-          <Box className="xw-clues">
+          <Box className={styles['xw-clues']}>
             <Title order={3}>Across</Title>
             <List mt="xs" spacing="xs" type="ordered">
               {CLUES_ACROSS.map((clue) => (
@@ -139,9 +141,9 @@ export function CrosswordPage() {
         </Box>
 
         {isSolved && (
-          <Box className="xw-solved">
-            <Text className="xw-solved__glyph">◉</Text>
-            <Text className="xw-solved__label">Solved. <em>Bene factum.</em></Text>
+          <Box className={styles['xw-solved']}>
+            <Text className={styles['xw-solved__glyph']}>◉</Text>
+            <Text className={styles['xw-solved__label']}>Solved. <em>Bene factum.</em></Text>
           </Box>
         )}
       </Container>

@@ -1,0 +1,79 @@
+.stamp-drawer__eyebrow {
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stamp-drawer__count {
+  margin-top: 2px;
+  color: var(--glow-spore);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.stamp-grid {
+  margin-bottom: 20px;
+}
+
+.stamp-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 6px;
+  border: 1px dashed var(--border-1);
+  border-radius: 8px;
+  text-align: center;
+  opacity: 0.35;
+  transition: opacity 200ms;
+}
+
+.stamp-card--collected {
+  border-color: rgba(242, 169, 59, 0.35);
+  border-style: solid;
+  background: rgba(242, 169, 59, 0.04);
+  opacity: 1;
+}
+
+.stamp-card__glyph {
+  color: var(--glow-spore);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.stamp-card:not(.stamp-card--collected) .stamp-card__glyph {
+  color: var(--fg-4);
+}
+
+.stamp-card__name {
+  color: var(--fg-2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stamp-card__latin {
+  color: var(--fg-4);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.stamp-drawer__hint {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-1);
+  color: var(--fg-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.stamp-drawer__hint--unlocked {
+  color: var(--glow-mycelium);
+}
