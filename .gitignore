@@ -27,3 +27,6 @@ test-results
 
 .design/*
 mantine-llm.txt
+
+# Per-developer local Claude Code overrides — never commit
+.claude/settings.local.json
